@@ -54,23 +54,29 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
         // 由于我的机器人是放在某个小服务器上的, 就将接收数据后的处理交给了另外一个服务器(看群里好多群友也这么干的)所以我这里就加了这几行代码,这根据自己的想法进行自定义
 
         // 这里也可以不进行转换 直接将微信中接收到的消息交给服务端, 提高效率,但是浪费在网络通信上的资源相对来说就会变多(根据自己需求自信来写没什么特别的)
-        System.out.println("微信中收到了消息:" + msg);
+//        System.out.println("微信中收到了消息:" + msg);
 
         //xzy
-        //如果返回的是AllUserList则将hasGetAllList置位true，并将结果反给String
+        //异步返回响应
         if(WechatBotCommon.USER_LIST.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             MsgVO.allList = msg;
             MsgVO.hasGetAllList = true;
         }
-        //如果返回的是
         if(WechatBotCommon.CHATROOM_MEMBER.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             MsgVO.roomListWithMember = msg;
             MsgVO.hasGetRoomListWithMember = true;
         }
-        //如果返回的是
         if(WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             MsgVO.memDetail = msg;
             MsgVO.hasGetMemDetail = true;
+        }
+
+        //监听数据包
+        if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            //
+        }
+        if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            //
         }
 
         // 是否开启远程处理消息功能

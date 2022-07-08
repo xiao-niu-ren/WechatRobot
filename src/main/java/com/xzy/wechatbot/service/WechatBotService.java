@@ -55,13 +55,13 @@ public interface WechatBotService {
      */
     void getWeChatUserList();
 
-    /**
-     * 描述:获取指定联系人的详细信息
-     *
-     * @param wxid 被获取详细信息的人的 微信id
-     * @return void
-     */
-    void getPersonalDetail(String wxid);
+//    /**
+//     * 描述:获取指定联系人的详细信息
+//     *
+//     * @param wxid 被获取详细信息的人的 微信id
+//     * @return void
+//     */
+//    void getPersonalDetail(String wxid);
 
     /**
      * 描述: 获取群组里指定联系人的详细信息

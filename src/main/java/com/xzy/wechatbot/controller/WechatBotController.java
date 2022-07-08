@@ -11,7 +11,14 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ *获取的方法：/getWeChatUserList                          获取所有联系人列表，包括微信好友、群组、公众号
+ *          /getMemberId                                获取所有群组列表及该群组所有群成员id
+ *          /getChatroomMemberNick/{roomid}/{wxid}      根据群组id和该组某成员id查询该成员群昵称
  *
+ * 发送的方法：/sendTextMsg                               发送文本消息
+ *           /sendImgMsg                                发送图片消息
+ *           /sendATMsg                                 发送@消息
+ *           /sendAnnex                                 发送附件消息
  */
 @RestController
 public class WechatBotController {
@@ -108,16 +115,8 @@ public class WechatBotController {
         while(true){
             //等待结果
             if(MsgVO.hasGetAllList){
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                return allList;
-
-                //其实也可以不用sleep，直接判断是否为null即可
                 if(MsgVO.allList != ""){
-                    //等到数据以后解锁，返回数据,用try保证返回以后再释放锁
+                    //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
                         return MsgVO.allList;
                     }finally {
@@ -157,7 +156,7 @@ public class WechatBotController {
             //等待结果
             if(MsgVO.hasGetMemDetail){
                 if(MsgVO.memDetail != ""){
-                    //等到数据以后解锁，返回数据,用try保证返回以后再释放锁
+                    //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
                         return MsgVO.memDetail;
                     }finally {
@@ -193,7 +192,7 @@ public class WechatBotController {
             //等待结果
             if(MsgVO.hasGetRoomListWithMember){
                 if(MsgVO.allList != ""){
-                    //等到数据以后解锁，返回数据,用try保证返回以后再释放锁
+                    //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
                         return MsgVO.roomListWithMember;
                     }finally {
@@ -210,15 +209,15 @@ public class WechatBotController {
         }
     }
 
-    /**
-     * 描述: 获取个人详细信息 3.2.2.121版本dll 未提供该接口
-     *
-     * @param
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
-    // @GetMapping("/getPersonalDetail/{wxid}")
-    public AjaxResult getPersonalDetail(@PathVariable("wxid") String wxid) {
-        wechatBotService.getPersonalDetail(wxid);
-        return AjaxResult.success();
-    }
+//    /**
+//     * 描述: 获取个人详细信息 3.2.2.121版本dll 未提供该接口
+//     *
+//     * @param
+//     * @return com.xzy.wechatbot.common.util.AjaxResult
+//     */
+//    // @GetMapping("/getPersonalDetail/{wxid}")
+//    public AjaxResult getPersonalDetail(@PathVariable("wxid") String wxid) {
+//        wechatBotService.getPersonalDetail(wxid);
+//        return AjaxResult.success();
+//    }
 }
