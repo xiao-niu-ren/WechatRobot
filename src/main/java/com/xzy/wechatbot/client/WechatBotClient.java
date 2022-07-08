@@ -70,10 +70,10 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
 
         //监听数据包
         if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            //
+            //异步发送给MQ，另一台机器进行订阅消费
         }
         if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            //
+            //异步发送给MQ，另一台机器进行订阅消费
         }
 
         // 是否开启远程处理消息功能
