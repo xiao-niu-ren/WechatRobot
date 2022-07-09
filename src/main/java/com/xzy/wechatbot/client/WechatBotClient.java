@@ -51,39 +51,40 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
      */
     @Override
     public void onMessage(String msg) {
-        // 由于我的机器人是放在某个小服务器上的, 就将接收数据后的处理交给了另外一个服务器,这根据自己的想法进行自定义
+
+//        System.out.println("微信中收到了消息:" + msg);
 
         //xzy
         //异步返回响应
         if(WechatBotCommon.USER_LIST.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            MsgVO.allList = msg;
-            MsgVO.hasGetAllList = true;
-        }
-        if(WechatBotCommon.CHATROOM_MEMBER.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            MsgVO.roomListWithMember = msg;
-            MsgVO.hasGetRoomListWithMember = true;
-        }
-        if(WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            MsgVO.memDetail = msg;
-            MsgVO.hasGetMemDetail = true;
+            MsgVO.setAllList(msg);
+            MsgVO.setHasGetAllList(true);
+        }else if(WechatBotCommon.CHATROOM_MEMBER.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            MsgVO.setRoomListWithMember(msg);
+            MsgVO.setHasGetRoomListWithMember(true);
+        }else if(WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            MsgVO.setMemDetail(msg);
+            MsgVO.setHasGetMemDetail(true);
         }
 
         //监听数据包
         if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             //异步发送给MQ，另一台机器进行订阅消费
+            System.out.println(msg);
         }
         if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             //异步发送给MQ，另一台机器进行订阅消费
+            System.out.println(msg);
         }
 
         // 是否开启远程处理消息功能
-        if (WechatBotConfig.wechatMsgServerIsOpen) {
-            // 不等于心跳包
-            WechatReceiveMsg wechatReceiveMsg = JSONObject.parseObject(msg, WechatReceiveMsg.class);
-            if (!WechatBotCommon.HEART_BEAT.equals(wechatReceiveMsg.getType())) {
-                HttpUtil.post(WechatBotConfig.wechatMsgServerUrl, msg);
-            }
-        }
+//        if (WechatBotConfig.wechatMsgServerIsOpen) {
+//            // 不等于心跳包
+//            WechatReceiveMsg wechatReceiveMsg = JSONObject.parseObject(msg, WechatReceiveMsg.class);
+//            if (!WechatBotCommon.HEART_BEAT.equals(wechatReceiveMsg.getType())) {
+//                HttpUtil.post(WechatBotConfig.wechatMsgServerUrl, msg);
+//            }
+//        }
     }
 
     /**
@@ -117,6 +118,7 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
      * @return void
      */
     public void sendMsgUtil(WechatMsg wechatMsg) {
+        //把""和null都变成null
         if (!StringUtils.hasText(wechatMsg.getExt())) {
             wechatMsg.setExt(NULL_MSG);
         }
@@ -135,8 +137,9 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
         // 消息Id
         wechatMsg.setId(String.valueOf(System.currentTimeMillis()));
         // 发送消息
-        String string = JSONObject.toJSONString(wechatMsg);
-        System.err.println(":" + string);
+        //下面的log先注释了
+//        String string = JSONObject.toJSONString(wechatMsg);
+//        System.err.println(":" + string);
         send(JSONObject.toJSONString(wechatMsg));
     }
 }

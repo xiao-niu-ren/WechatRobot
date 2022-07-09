@@ -108,17 +108,17 @@ public class WechatBotController {
         long start = System.currentTimeMillis();
         //保证多个请求到来时候，一个时刻只有一个请求在等待
         lock.lock();
-        MsgVO.allList = "";
-        MsgVO.hasGetAllList = false;
+        MsgVO.setAllList("tbd1");
+        MsgVO.setHasGetAllList(false);
         //发送websocket请求获取列表
         wechatBotService.getWeChatUserList();
         while(true){
             //等待结果
-            if(MsgVO.hasGetAllList){
-                if(MsgVO.allList != ""){
+            if(MsgVO.isHasGetAllList()){
+                if(!MsgVO.getAllList().equals("tbd1")){
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
-                        return MsgVO.allList;
+                        return MsgVO.getAllList();
                     }finally {
                         lock.unlock();
                     }
@@ -128,7 +128,7 @@ public class WechatBotController {
             if(System.currentTimeMillis() - start >= 10000){
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
-                return "500";
+                return "500" + "：getWeChatUserList失败";
             }
         }
 
@@ -148,17 +148,17 @@ public class WechatBotController {
         long start = System.currentTimeMillis();
         //保证多个请求到来时候，一个时刻只有一个请求在等待
         lock.lock();
-        MsgVO.memDetail = "";
-        MsgVO.hasGetMemDetail = false;
+        MsgVO.setMemDetail("tbd2");
+        MsgVO.setHasGetMemDetail(false);
         //发送websocket请求获取列表
         wechatBotService.getChatroomMemberNick(roomid,wxid);
         while(true){
             //等待结果
-            if(MsgVO.hasGetMemDetail){
-                if(MsgVO.memDetail != ""){
+            if(MsgVO.isHasGetMemDetail()){
+                if(!MsgVO.getMemDetail().equals("tbd2")){
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
-                        return MsgVO.memDetail;
+                        return MsgVO.getMemDetail();
                     }finally {
                         lock.unlock();
                     }
@@ -168,7 +168,7 @@ public class WechatBotController {
             if(System.currentTimeMillis() - start >= 10000){
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
-                return "500";
+                return "500" + "：getChatroomMemberNick/{roomid}/{wxid}失败";
             }
         }
     }
@@ -184,17 +184,17 @@ public class WechatBotController {
         long start = System.currentTimeMillis();
         //保证多个请求到来时候，一个时刻只有一个请求在等待
         lock.lock();
-        MsgVO.roomListWithMember = "";
-        MsgVO.hasGetRoomListWithMember = false;
+        MsgVO.setRoomListWithMember("tbd3");
+        MsgVO.setHasGetRoomListWithMember(false);
         //发送websocket请求获取列表
         wechatBotService.getMemberId();
         while(true){
             //等待结果
-            if(MsgVO.hasGetRoomListWithMember){
-                if(MsgVO.allList != ""){
+            if(MsgVO.isHasGetRoomListWithMember()){
+                if(!MsgVO.getRoomListWithMember().equals("tbd3")){
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
                     try{
-                        return MsgVO.roomListWithMember;
+                        return MsgVO.getRoomListWithMember();
                     }finally {
                         lock.unlock();
                     }
@@ -204,7 +204,7 @@ public class WechatBotController {
             if(System.currentTimeMillis() - start >= 10000){
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
-                return "500";
+                return "500" + "：/getMemberId失败";
             }
         }
     }
