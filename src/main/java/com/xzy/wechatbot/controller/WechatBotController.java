@@ -45,7 +45,6 @@ public class WechatBotController {
 
     /**
      * 描述: 发送文本消息
-     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -57,7 +56,6 @@ public class WechatBotController {
 
     /**
      * 描述: 发送图片消息
-     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -70,7 +68,6 @@ public class WechatBotController {
 
     /**
      * 描述: 群组内发送@指定人消息(dll 3.1.0.66版本不可用)
-     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -82,7 +79,6 @@ public class WechatBotController {
 
     /**
      * 描述: 发送附件
-     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult、
      */
@@ -97,7 +93,6 @@ public class WechatBotController {
 
     /**
      * 描述: 获取微信群组,联系人列表
-     *
      * @param
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -137,7 +132,6 @@ public class WechatBotController {
 
     /**
      * 描述: 获取群组里指定联系人的详细信息
-     *
      * @param roomid 群组id
      * @param wxid   指定用户id
      * @return com.xzy.wechatbot.common.util.AjaxResult
@@ -175,7 +169,6 @@ public class WechatBotController {
 
     /**
      * 描述: 获取所有群组以及成员
-     *
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
     @GetMapping("/getMemberId")
