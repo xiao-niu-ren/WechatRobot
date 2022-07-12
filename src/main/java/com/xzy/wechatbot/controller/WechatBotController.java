@@ -23,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @RestController
 public class WechatBotController {
 
-    //xzy
+    //互斥锁
     private static Lock lock = new ReentrantLock();
 
     @Autowired
