@@ -141,6 +141,7 @@ public class WechatBotController {
         //计时
         long start = System.currentTimeMillis();
         //保证多个请求到来时候，一个时刻只有一个请求在等待
+        //后续如果点开一个群，展示所有成员昵称的话，加锁保证websocket获取想要的数据的方式还需要改善
         lock.lock();
         MsgVO.setMemDetail("tbd2");
         MsgVO.setHasGetMemDetail(false);
