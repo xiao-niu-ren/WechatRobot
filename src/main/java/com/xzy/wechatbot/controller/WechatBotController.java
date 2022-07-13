@@ -142,6 +142,7 @@ public class WechatBotController {
         long start = System.currentTimeMillis();
         //保证多个请求到来时候，一个时刻只有一个请求在等待
         //后续如果点开一个群，展示所有成员昵称的话，加锁保证websocket获取想要的数据的方式还需要改善
+        //其实也可以增量调用这个接口，然后群信息放到数据库中，定时更新就好了，保证CAP中的AP
         lock.lock();
         MsgVO.setMemDetail("tbd2");
         MsgVO.setHasGetMemDetail(false);
