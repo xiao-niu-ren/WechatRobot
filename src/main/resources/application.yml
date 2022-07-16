@@ -7,6 +7,8 @@ wechatBot:
   url: ws://localhost:5555
 
 
+#DB配置
+#MQ配置
 
 ## 微信消息处理地址(将消息发送给指定接口)
 #wechatBotServer:
