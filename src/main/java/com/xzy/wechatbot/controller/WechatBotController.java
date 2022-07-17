@@ -7,18 +7,19 @@ import com.xzy.wechatbot.vo.MsgVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.PriorityQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 获取的方法：/getWeChatUserList                         获取所有联系人列表，包括微信好友、群组、公众号
- *           /getMemberId                               获取所有群组列表及该群组所有群成员id
- *           /getChatroomMemberNick/{roomid}/{wxid}     根据群组id和该组某成员id查询该成员群昵称
- *
+ * /getMemberId                               获取所有群组列表及该群组所有群成员id
+ * /getChatroomMemberNick/{roomid}/{wxid}     根据群组id和该组某成员id查询该成员群昵称
+ * <p>
  * 发送的方法：/sendTextMsg                               发送文本消息
- *           /sendImgMsg                                发送图片消息
- *           /sendATMsg                                 发送@消息
- *           /sendAnnex                                 发送附件消息
+ * /sendImgMsg                                发送图片消息
+ * /sendATMsg                                 发送@消息
+ * /sendAnnex                                 发送附件消息
  */
 @RestController
 public class WechatBotController {
@@ -45,6 +46,7 @@ public class WechatBotController {
 
     /**
      * 描述: 发送文本消息
+     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -56,6 +58,7 @@ public class WechatBotController {
 
     /**
      * 描述: 发送图片消息
+     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -68,6 +71,7 @@ public class WechatBotController {
 
     /**
      * 描述: 群组内发送@指定人消息(dll 3.1.0.66版本不可用)
+     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -79,6 +83,7 @@ public class WechatBotController {
 
     /**
      * 描述: 发送附件
+     *
      * @param wechatMsg
      * @return com.xzy.wechatbot.common.util.AjaxResult、
      */
@@ -93,6 +98,7 @@ public class WechatBotController {
 
     /**
      * 描述: 获取微信群组,联系人列表
+     *
      * @param
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
@@ -107,20 +113,20 @@ public class WechatBotController {
         MsgVO.setHasGetAllList(false);
         //发送websocket请求获取列表
         wechatBotService.getWeChatUserList();
-        while(true){
+        while (true) {
             //等待结果
-            if(MsgVO.isHasGetAllList()){
-                if(!MsgVO.getAllList().equals("tbd1")){
+            if (MsgVO.isHasGetAllList()) {
+                if (!MsgVO.getAllList().equals("tbd1")) {
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
-                    try{
+                    try {
                         return MsgVO.getAllList();
-                    }finally {
+                    } finally {
                         lock.unlock();
                     }
                 }
             }
             //如果超过10秒，可能是websocket不服务了或者怎么样，那就返回500，不能一直阻塞
-            if(System.currentTimeMillis() - start >= 10000){
+            if (System.currentTimeMillis() - start >= 10000) {
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
                 return "500" + "：getWeChatUserList失败";
@@ -132,6 +138,7 @@ public class WechatBotController {
 
     /**
      * 描述: 获取群组里指定联系人的详细信息
+     *
      * @param roomid 群组id
      * @param wxid   指定用户id
      * @return com.xzy.wechatbot.common.util.AjaxResult
@@ -147,21 +154,21 @@ public class WechatBotController {
         MsgVO.setMemDetail("tbd2");
         MsgVO.setHasGetMemDetail(false);
         //发送websocket请求获取列表
-        wechatBotService.getChatroomMemberNick(roomid,wxid);
-        while(true){
+        wechatBotService.getChatroomMemberNick(roomid, wxid);
+        while (true) {
             //等待结果
-            if(MsgVO.isHasGetMemDetail()){
-                if(!MsgVO.getMemDetail().equals("tbd2")){
+            if (MsgVO.isHasGetMemDetail()) {
+                if (!MsgVO.getMemDetail().equals("tbd2")) {
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
-                    try{
+                    try {
                         return MsgVO.getMemDetail();
-                    }finally {
+                    } finally {
                         lock.unlock();
                     }
                 }
             }
             //如果超过10秒，可能是websocket不服务了或者怎么样，那就返回500，不能一直阻塞
-            if(System.currentTimeMillis() - start >= 10000){
+            if (System.currentTimeMillis() - start >= 10000) {
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
                 return "500" + "：getChatroomMemberNick/{roomid}/{wxid}失败";
@@ -171,6 +178,7 @@ public class WechatBotController {
 
     /**
      * 描述: 获取所有群组以及成员
+     *
      * @return com.xzy.wechatbot.common.util.AjaxResult
      */
     @GetMapping("/getMemberId")
@@ -183,20 +191,20 @@ public class WechatBotController {
         MsgVO.setHasGetRoomListWithMember(false);
         //发送websocket请求获取列表
         wechatBotService.getMemberId();
-        while(true){
+        while (true) {
             //等待结果
-            if(MsgVO.isHasGetRoomListWithMember()){
-                if(!MsgVO.getRoomListWithMember().equals("tbd3")){
+            if (MsgVO.isHasGetRoomListWithMember()) {
+                if (!MsgVO.getRoomListWithMember().equals("tbd3")) {
                     //等到数据以后解锁，返回数据,用try-finally保证返回的数据准备好以后再释放锁，避免多线程下出现数据冲突
-                    try{
+                    try {
                         return MsgVO.getRoomListWithMember();
-                    }finally {
+                    } finally {
                         lock.unlock();
                     }
                 }
             }
             //如果超过10秒，可能是websocket不服务了或者怎么样，那就返回500，不能一直阻塞
-            if(System.currentTimeMillis() - start >= 10000){
+            if (System.currentTimeMillis() - start >= 10000) {
                 //这时候可以直接释放掉，返回了
                 lock.unlock();
                 return "500" + "：/getMemberId失败";
