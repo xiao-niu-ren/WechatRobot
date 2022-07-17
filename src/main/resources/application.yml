@@ -1,6 +1,6 @@
 # tomcat接口地址访问地址
 server:
-  port: 8081
+  port: 8080
 
 # 连接到webSocket 连接地址
 wechatBot:
