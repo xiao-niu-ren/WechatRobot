@@ -77,6 +77,8 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
             System.out.println(msg);
         }
 
+        //如果想做成智能机器人的话，这里也可以进行直接发送WebSocket
+
         // 是否开启远程处理消息功能
 //        if (WechatBotConfig.wechatMsgServerIsOpen) {
 //            // 不等于心跳包
