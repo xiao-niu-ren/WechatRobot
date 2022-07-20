@@ -65,15 +65,11 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
         }else if(WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
             MsgVO.setMemDetail(msg);
             MsgVO.setHasGetMemDetail(true);
-        }
-
-        //监听数据包
-        if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            //异步发送给MQ，另一台机器进行订阅消费
+        }else if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            //异步发送文字消息给MQ，另一台机器进行订阅消费
             System.out.println(msg);
-        }
-        if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
-            //异步发送给MQ，另一台机器进行订阅消费
+        }else if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+            //异步发送图片消息给MQ，另一台机器进行订阅消费
             System.out.println(msg);
         }
 
