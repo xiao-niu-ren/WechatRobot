@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 
 /**
  * websocket机器人客户端
@@ -56,19 +57,19 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
 
         //xzy
         //异步返回响应
-        if(WechatBotCommon.USER_LIST.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+        if (WechatBotCommon.USER_LIST.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())) {
             MsgVO.setAllList(msg);
             MsgVO.setHasGetAllList(true);
-        }else if(WechatBotCommon.CHATROOM_MEMBER.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+        } else if (WechatBotCommon.CHATROOM_MEMBER.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())) {
             MsgVO.setRoomListWithMember(msg);
             MsgVO.setHasGetRoomListWithMember(true);
-        }else if(WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+        } else if (WechatBotCommon.CHATROOM_MEMBER_NICK.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())) {
             MsgVO.setMemDetail(msg);
             MsgVO.setHasGetMemDetail(true);
-        }else if(WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+        } else if (WechatBotCommon.RECV_TXT_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())) {
             //异步发送文字消息给MQ，另一台机器进行订阅消费
             System.out.println(msg);
-        }else if(WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())){
+        } else if (WechatBotCommon.RECV_PIC_MSG.equals(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType())) {
             //异步发送图片消息给MQ，另一台机器进行订阅消费
             System.out.println(msg);
         }
