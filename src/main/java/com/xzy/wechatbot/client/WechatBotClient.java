@@ -79,7 +79,7 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
 
 //        是否开启远程处理消息功能
 //        if (WechatBotConfig.wechatMsgServerIsOpen) {
-//            // 不等于心跳包
+//            //不等于心跳包
 //            WechatReceiveMsg wechatReceiveMsg = JSONObject.parseObject(msg, WechatReceiveMsg.class);
 //            if (!WechatBotCommon.HEART_BEAT.equals(wechatReceiveMsg.getType())) {
 //                HttpUtil.post(WechatBotConfig.wechatMsgServerUrl, msg);
