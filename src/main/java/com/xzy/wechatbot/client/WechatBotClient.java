@@ -75,7 +75,7 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
         }
         //除了RECV_TXT_MSG和RECV_PIC_MSG还有没有另外的东西呢？=_=
 
-        //如果想做成智能机器人的话，这里也可以进行直接发送WebSocket，如Q & A
+        //如果想做成智能机器人的话，这里也可以进行直接发送WebSocket，如Q&A
 
 //        是否开启远程处理消息功能
 //        if (WechatBotConfig.wechatMsgServerIsOpen) {
