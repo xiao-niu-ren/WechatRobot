@@ -12,11 +12,11 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 获取的方法：/getWeChatUserList                         获取所有联系人列表，包括微信好友、群组、公众号
+ * 获取的方法：/getWeChatUserList               获取所有联系人列表，包括微信好友、群组、公众号
  * /getMemberId                               获取所有群组列表及该群组所有群成员id
  * /getChatroomMemberNick/{roomid}/{wxid}     根据群组id和该组某成员id查询该成员群昵称
  * <p>
- * 发送的方法：/sendTextMsg                               发送文本消息
+ * 发送的方法：/sendTextMsg                     发送文本消息
  * /sendImgMsg                                发送图片消息
  * /sendATMsg                                 发送@消息
  * /sendAnnex                                 发送附件消息
