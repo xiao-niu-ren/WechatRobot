@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * <p>
  * 发送的方法：/sendTextMsg                     发送文本消息
  * /sendImgMsg                                发送图片消息
- * /sendATMsg                                 发送@消息
+ * /sendATMsg                                 发送at消息
  * /sendAnnex                                 发送附件消息
  */
 @RestController
