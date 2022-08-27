@@ -1,8 +1,5 @@
 package com.xzy.wechatbot.common;
 
-/**
- *
- */
 public interface WechatBotCommon {
 
     /** 服务器返回心跳包 */
@@ -11,7 +8,7 @@ public interface WechatBotCommon {
     Integer RECV_TXT_MSG = 1;
     /** 收到的消息为图片消息 */
     Integer RECV_PIC_MSG = 3;
-    // 微信好友请求消息
+    /** 微信好友请求消息 */
     Integer NEW_FRIEND_REQUEST = 37;
     /** 发送消息类型为文本 */
     Integer TXT_MSG = 555;
@@ -38,14 +35,12 @@ public interface WechatBotCommon {
     Integer PERSONAL_DETAIL = 6550;
     Integer DESTROY_ALL = 9999;
 
-    // 同意微信好友请求消息
+    /** 同意微信好友请求消息 */
     Integer AGREE_TO_FRIEND_REQUEST = 10000;
     String ROOM_MEMBER_LIST = "op:list member";
     String CONTACT_LIST = "user list";
     String NULL_MSG = "null";
 
-
     String PERSONAL_DETAIL_CONTENT = "op:personal detail";
-
 
 }

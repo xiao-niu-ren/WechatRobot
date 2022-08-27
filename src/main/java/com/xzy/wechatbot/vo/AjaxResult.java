@@ -1,4 +1,4 @@
-package com.xzy.wechatbot.common.util;
+package com.xzy.wechatbot.vo;
 
 
 import java.util.HashMap;
@@ -174,6 +174,5 @@ public class AjaxResult extends HashMap<String, Object> {
     public static AjaxResult parameterError(String msg) {
         return new AjaxResult(BAD_REQUEST, msg);
     }
-
 
 }

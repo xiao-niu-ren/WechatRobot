@@ -1,10 +1,10 @@
-# tomcat接口地址访问地址
-server:
-  port: 8080
+## tomcat接口地址访问地址
+#server:
+#  port: xxxx
 
-# 连接到webSocket 连接地址
-wechatBot:
-  url: ws://localhost:5555
+## 连接到webSocket 连接地址
+#wechatBot:
+#  url: ws://xxxx:xxxx
 
 
 #DB配置
@@ -18,8 +18,8 @@ wechatBot:
 #  isOpen: false
 
 
-# 日志配置
-logging:
-  level:
-    io.uouo: debug
-    org.springframework: warn
+## 日志配置
+#logging:
+#  level:
+#    io.uouo: debug
+#    org.springframework: warn

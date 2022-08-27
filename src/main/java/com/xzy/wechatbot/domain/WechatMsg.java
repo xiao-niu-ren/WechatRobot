@@ -1,8 +1,8 @@
 package com.xzy.wechatbot.domain;
 
-/**
- *
- */
+import lombok.Data;
+
+@Data
 public class WechatMsg {
     /** 消息id */
     private String id;
@@ -18,71 +18,5 @@ public class WechatMsg {
     private String nickname;
     /** 图片消息的图片地址(绝对路径 D:/xxx.jpg) */
     private String path;
-
     private String ext;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getWxid() {
-        return wxid;
-    }
-
-    public void setWxid(String wxid) {
-        this.wxid = wxid;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getRoomid() {
-        return roomid;
-    }
-
-    public void setRoomid(String roomid) {
-        this.roomid = roomid;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getExt() {
-        return ext;
-    }
-
-    public void setExt(String ext) {
-        this.ext = ext;
-    }
 }

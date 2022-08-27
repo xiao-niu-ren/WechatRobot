@@ -1,24 +1,27 @@
 package com.xzy.wechatbot.controller;
 
-import com.xzy.wechatbot.common.util.AjaxResult;
+import com.xzy.wechatbot.vo.AjaxResult;
 import com.xzy.wechatbot.domain.WechatMsg;
 import com.xzy.wechatbot.service.WechatBotService;
 import com.xzy.wechatbot.vo.MsgVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
- * 获取的方法：/getWeChatUserList               获取所有联系人列表，包括微信好友、群组、公众号
- * /getMemberId                               获取所有群组列表及该群组所有群成员id
- * /getChatroomMemberNick/{roomid}/{wxid}     根据群组id和该组某成员id查询该成员群昵称
- * <p>
- * 发送的方法：/sendTextMsg                     发送文本消息
- * /sendImgMsg                                发送图片消息
- * /sendATMsg                                 发送at消息
- * /sendAnnex                                 发送附件消息
+ * 获取的方法：
+ * /getWeChatUserList                         GET|获取所有联系人列表，包括微信好友、群组、公众号
+ * /getMemberId                               GET|获取所有群组列表及该群组所有群成员id
+ * /getChatroomMemberNick/{roomid}/{wxid}     GET|根据群组id和该组某成员id查询该成员群昵称
+ *
+ * 发送的方法：
+ * /xiaoniuren                                GET or POST|给小牛人发消息
+ * /wechatCommon                              POST|发送通用消息
+ * /sendTextMsg                               POST|发送文本消息
+ * /sendImgMsg                                POST|发送图片消息
+ * /sendATMsg                                 POST|发送at消息
+ * /sendAnnex                                 POST|发送附件消息
  */
 @RestController
 public class WechatBotController {
@@ -26,77 +29,46 @@ public class WechatBotController {
     @Autowired
     private WechatBotService wechatBotService;
 
-    private final String XIAO_NIU_REN_WX_ID = "wxid_xhf4rlj06gih22";
+    @Value("${xiaoniuren.wxid}")
+    private String XIAO_NIU_REN_WX_ID;
 
-
-    /**
-     * 描述: 通用请求接口
-     * @param wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @PostMapping("/wechatCommon")
     public AjaxResult wechatCommon(@RequestBody WechatMsg wechatMsg) {
         wechatBotService.wechatCommon(wechatMsg);
         return AjaxResult.success();
     }
 
-
-    /**
-     * 描述: 发送文本消息
-     * @param wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @PostMapping("/sendTextMsg")
     public AjaxResult sendTextMsg(@RequestBody WechatMsg wechatMsg) {
         wechatBotService.sendTextMsg(wechatMsg);
         return AjaxResult.success();
     }
 
-    /**
-     * 描述: 给小牛人发送文本消息,get,post均可
-     * @param msg,wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @RequestMapping("/xiaoniuren")
-    public AjaxResult xiaoniuren(@RequestParam String msg,@RequestBody WechatMsg wechatMsg) {
-        if(wechatMsg == null){
+    public AjaxResult xiaoniuren(@RequestParam(required = false) String msg,@RequestBody(required = false) WechatMsg wechatMsg) {
+        if(!StringUtils.isEmpty(msg)){
             WechatMsg msgToSend = new WechatMsg();
             msgToSend.setWxid(XIAO_NIU_REN_WX_ID);
             msgToSend.setContent(msg);
             wechatBotService.sendTextMsg(msgToSend);
+        } else {
+            wechatBotService.sendTextMsg(wechatMsg);
         }
-        wechatBotService.sendTextMsg(wechatMsg);
         return AjaxResult.success();
     }
 
-    /**
-     * 描述: 发送图片消息
-     * @param wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @PostMapping("/sendImgMsg")
     public AjaxResult sendImgMsg(@RequestBody WechatMsg wechatMsg) {
-        // 发送消息
         wechatBotService.sendImgMsg(wechatMsg);
         return AjaxResult.success();
     }
 
-    /**
-     * 描述: 群组内发送@指定人消息(dll 3.1.0.66版本不可用)
-     * @param wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @PostMapping("/sendATMsg")
     public AjaxResult sendATMsg(@RequestBody WechatMsg wechatMsg) {
         wechatBotService.sendATMsg(wechatMsg);
         return AjaxResult.success();
     }
 
-    /**
-     * 描述: 发送附件
-     * @param wechatMsg
-     * @return com.xzy.wechatbot.common.util.AjaxResult、
-     */
     @PostMapping("/sendAnnex")
     public AjaxResult sendAnnex(@RequestBody WechatMsg wechatMsg) {
         wechatBotService.sendAnnex(wechatMsg);
@@ -106,11 +78,6 @@ public class WechatBotController {
 
     // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 获取信息 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-    /**
-     * 描述: 获取微信群组,联系人列表
-     * @param
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @GetMapping("/getWeChatUserList")
     public String getWeChatUserList() {
 
@@ -142,15 +109,8 @@ public class WechatBotController {
             }
         }
 
-//        return AjaxResult.success("执行结果稍后会打印在控制台");
     }
 
-    /**
-     * 描述: 获取群组里指定联系人的详细信息
-     * @param roomid 群组id
-     * @param wxid   指定用户id
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @GetMapping("/getChatroomMemberNick/{roomid}/{wxid}")
     public String getChatroomMemberNick(@PathVariable("roomid") String roomid, @PathVariable("wxid") String wxid) {
         //计时
@@ -179,15 +139,11 @@ public class WechatBotController {
             if (System.currentTimeMillis() - start > 10000L) {
                 //这时候可以直接释放掉，返回了
                 MsgVO.getLock().unlock();
-                return "500" + "：getChatroomMemberNick/{roomid}/{wxid} error";
+                return "500" + "：getChatroomMemberNick/{roomid: " + roomid + "}/{wxid: " + roomid + "} error";
             }
         }
     }
 
-    /**
-     * 描述: 获取所有群组以及成员
-     * @return com.xzy.wechatbot.common.util.AjaxResult
-     */
     @GetMapping("/getMemberId")
     public String getMemberId() {
         //计时
@@ -214,20 +170,9 @@ public class WechatBotController {
             if (System.currentTimeMillis() - start > 10000) {
                 //这时候可以直接释放掉，返回了
                 MsgVO.getLock().unlock();
-                return "500" + "：getMemberI error";
+                return "500" + "：getMemberId error";
             }
         }
     }
 
-//    /**
-//     * 描述: 获取个人详细信息 3.2.2.121版本dll 未提供该接口
-//     *
-//     * @param
-//     * @return com.xzy.wechatbot.common.util.AjaxResult
-//     */
-//    // @GetMapping("/getPersonalDetail/{wxid}")
-//    public AjaxResult getPersonalDetail(@PathVariable("wxid") String wxid) {
-//        wechatBotService.getPersonalDetail(wxid);
-//        return AjaxResult.success();
-//    }
 }
