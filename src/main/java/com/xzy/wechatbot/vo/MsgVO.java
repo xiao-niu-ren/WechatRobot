@@ -18,7 +18,7 @@ public class MsgVO {
     private static String memDetail;
     private static boolean hasGetMemDetail;
 
-    public static Lock getLock() {
+    public synchronized static Lock getLock() {
         return lock;
     }
 
