@@ -1,16 +1,26 @@
 package com.xzy.wechatbot.vo;
 
-public class MsgVO {
-    //好友、群聊、公众号 列表
-    public static String allList;
-    //群成员带成员id信息
-    public static String roomListWithMember;
-    //群成员昵称
-    public static String memDetail;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-    public static boolean hasGetAllList;
-    public static boolean hasGetRoomListWithMember;
-    public static boolean hasGetMemDetail;
+public class MsgVO {
+
+    //互斥锁
+    private static Lock lock = new ReentrantLock();
+
+    //好友、群聊、公众号 列表
+    private static String allList;
+    private static boolean hasGetAllList;
+    //群成员带成员id信息
+    private static String roomListWithMember;
+    private static boolean hasGetRoomListWithMember;
+    //群成员昵称
+    private static String memDetail;
+    private static boolean hasGetMemDetail;
+
+    public static Lock getLock() {
+        return lock;
+    }
 
     public static String getAllList() {
         return allList;
@@ -59,4 +69,5 @@ public class MsgVO {
     public static void setHasGetMemDetail(boolean hasGetMemDetail) {
         MsgVO.hasGetMemDetail = hasGetMemDetail;
     }
+
 }
