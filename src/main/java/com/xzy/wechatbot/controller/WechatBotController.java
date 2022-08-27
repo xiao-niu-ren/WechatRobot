@@ -26,6 +26,8 @@ public class WechatBotController {
     @Autowired
     private WechatBotService wechatBotService;
 
+    private final String XIAO_NIU_REN_WX_ID = "wxid_xhf4rlj06gih22";
+
 
     /**
      * 描述: 通用请求接口
@@ -46,6 +48,23 @@ public class WechatBotController {
      */
     @PostMapping("/sendTextMsg")
     public AjaxResult sendTextMsg(@RequestBody WechatMsg wechatMsg) {
+        wechatBotService.sendTextMsg(wechatMsg);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 描述: 给小牛人发送文本消息,get,post均可
+     * @param msg,wechatMsg
+     * @return com.xzy.wechatbot.common.util.AjaxResult
+     */
+    @RequestMapping("/xiaoniuren")
+    public AjaxResult xiaoniuren(@RequestParam String msg,@RequestBody WechatMsg wechatMsg) {
+        if(wechatMsg == null){
+            WechatMsg msgToSend = new WechatMsg();
+            msgToSend.setWxid(XIAO_NIU_REN_WX_ID);
+            msgToSend.setContent(msg);
+            wechatBotService.sendTextMsg(msgToSend);
+        }
         wechatBotService.sendTextMsg(wechatMsg);
         return AjaxResult.success();
     }
