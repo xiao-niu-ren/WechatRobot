@@ -9,9 +9,16 @@ import cn.hutool.http.HttpRequest;
  */
 public class HttpClient {
 
+    public static String doGet(String url) {
+        return HttpRequest.get(url)
+                .header("Accept", "application/json")
+                .execute().body();
+    }
+
     public static String doPost(String url, String body) {
         return HttpRequest.post(url)
-                .header("Content-Type", "application/json")//头信息，多个头信息多次调用此方法即可
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
                 .body(body)
                 .execute().body();
     }

@@ -1,5 +1,6 @@
 package com.xzy.wechatbot.client;
 
+import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xzy.wechatbot.common.WechatBotCommon;
@@ -15,15 +16,15 @@ import org.springframework.util.StringUtils;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class WechatClient extends WebSocketClient implements WechatBotCommon {
+public class WechatBotClient extends WebSocketClient implements WechatBotCommon {
 
     private static String wechatMessageUrl;
 
     public static void setWechatMessageUrl(String wechatMessageUrl) {
-        WechatClient.wechatMessageUrl = wechatMessageUrl;
+        WechatBotClient.wechatMessageUrl = wechatMessageUrl;
     }
 
-    public WechatClient(String url) throws URISyntaxException {
+    public WechatBotClient(String url) throws URISyntaxException {
         super(new URI(url));
     }
 
@@ -52,11 +53,11 @@ public class WechatClient extends WebSocketClient implements WechatBotCommon {
                 break;
             case RECV_TXT_MSG:
                 //异步发送文字消息给MQ，另一台机器进行订阅消费
-                HttpClient.doPost(wechatMessageUrl + "/wechat_rsv_txt_msg", JSON.toJSONString(wechatReceiveMsg));
+                HttpClient.doPost(wechatMessageUrl + "/wechat-rsv-msg/txt", JSON.toJSONString(wechatReceiveMsg));
                 break;
             case RECV_PIC_MSG:
                 //异步发送图片消息给MQ，另一台机器进行订阅消费
-                HttpClient.doPost(wechatMessageUrl + "/wechat_rsv_pic_msg", JSON.toJSONString(wechatReceiveMsg));
+                HttpClient.doPost(wechatMessageUrl + "/wechat-rsv-msg/pic", JSON.toJSONString(wechatReceiveMsg));
                 break;
         }
         //除了RECV_TXT_MSG和RECV_PIC_MSG还有没有另外的东西呢？=_=
