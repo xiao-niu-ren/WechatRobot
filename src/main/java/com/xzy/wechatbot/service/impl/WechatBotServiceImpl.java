@@ -1,6 +1,6 @@
 package com.xzy.wechatbot.service.impl;
 
-import com.xzy.wechatbot.client.WechatBotClient;
+import com.xzy.wechatbot.client.WechatClient;
 import com.xzy.wechatbot.common.WechatBotCommon;
 import com.xzy.wechatbot.domain.WechatMsg;
 import com.xzy.wechatbot.service.WechatBotService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class WechatBotServiceImpl implements WechatBotService, WechatBotCommon {
 
     @Autowired
-    private WechatBotClient wechatBotClient;
+    private WechatClient wechatBotClient;
 
     @Override
     public void wechatCommon(WechatMsg wechatMsg) {

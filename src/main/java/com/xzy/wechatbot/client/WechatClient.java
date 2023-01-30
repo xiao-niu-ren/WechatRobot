@@ -1,10 +1,12 @@
 package com.xzy.wechatbot.client;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xzy.wechatbot.common.WechatBotCommon;
 import com.xzy.wechatbot.domain.WechatMsg;
 import com.xzy.wechatbot.domain.WechatReceiveMsg;
 import com.xzy.wechatbot.enums.MsgTypeEnum;
+import com.xzy.wechatbot.util.HttpClient;
 import com.xzy.wechatbot.vo.MsgVO;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -13,10 +15,15 @@ import org.springframework.util.StringUtils;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class WechatBotClient extends WebSocketClient implements WechatBotCommon {
+public class WechatClient extends WebSocketClient implements WechatBotCommon {
 
+    private static String wechatMessageUrl;
 
-    public WechatBotClient(String url) throws URISyntaxException {
+    public static void setWechatMessageUrl(String wechatMessageUrl) {
+        WechatClient.wechatMessageUrl = wechatMessageUrl;
+    }
+
+    public WechatClient(String url) throws URISyntaxException {
         super(new URI(url));
     }
 
@@ -27,9 +34,9 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
 
     @Override
     public void onMessage(String msg) {
-        //xzy
         //异步返回响应
-        MsgTypeEnum msgType = MsgTypeEnum.findByValue(JSONObject.parseObject(msg, WechatReceiveMsg.class).getType());
+        WechatReceiveMsg wechatReceiveMsg = JSONObject.parseObject(msg, WechatReceiveMsg.class);
+        MsgTypeEnum msgType = MsgTypeEnum.findByValue(wechatReceiveMsg.getType());
         switch (msgType) {
             case USER_LIST:
                 MsgVO.setAllList(msg);
@@ -45,9 +52,11 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
                 break;
             case RECV_TXT_MSG:
                 //异步发送文字消息给MQ，另一台机器进行订阅消费
+                HttpClient.doPost(wechatMessageUrl + "/wechat_rsv_txt_msg", JSON.toJSONString(wechatReceiveMsg));
                 break;
             case RECV_PIC_MSG:
                 //异步发送图片消息给MQ，另一台机器进行订阅消费
+                HttpClient.doPost(wechatMessageUrl + "/wechat_rsv_pic_msg", JSON.toJSONString(wechatReceiveMsg));
                 break;
         }
         //除了RECV_TXT_MSG和RECV_PIC_MSG还有没有另外的东西呢？=_=
