@@ -38,6 +38,9 @@ public class WechatBotClient extends WebSocketClient implements WechatBotCommon 
         //异步返回响应
         WechatReceiveMsg wechatReceiveMsg = JSONObject.parseObject(msg, WechatReceiveMsg.class);
         MsgTypeEnum msgType = MsgTypeEnum.findByValue(wechatReceiveMsg.getType());
+        if (msgType == null) {
+            return;
+        }
         switch (msgType) {
             case USER_LIST:
                 MsgVO.setAllList(msg);
