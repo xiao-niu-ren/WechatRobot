@@ -21,5 +21,5 @@
 ## 日志配置
 #logging:
 #  level:
-#    io.uouo: debug
+#    io.xzy: debug
 #    org.springframework: warn
