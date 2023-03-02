@@ -72,7 +72,7 @@
     </appender>
 	
 	<!-- 系统模块日志级别控制  -->
-	<logger name="io.uouo" level="info" />
+	<logger name="io.xzy" level="info" />
 	<!-- Spring日志级别控制  -->
 	<logger name="org.springframework" level="warn" />
 
